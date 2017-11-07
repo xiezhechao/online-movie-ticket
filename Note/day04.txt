@@ -1,0 +1,184 @@
+﻿select语句的语法格式:
+
+select 字段列表 from 表名 
+where 条件
+group by 字段
+having 条件 
+order by 字段 asc|desc
+limit 起始位置,条数
+
+select 字段列表 from 表名 t1
+join 表名 t2 on t1.字段=t2.字段
+where 条件
+group by 字段
+having 条件 
+order by 字段 asc|desc
+limit 起始位置,条数
+
+
+Db类的方法:
+	增加:
+	insert()
+	删除:
+	delete()
+	修改:
+	update()
+	查询:
+	select()
+	find()
+	count()
+
+	where()
+	limit()
+	order()
+	join()
+	alias()  
+	group()
+	having()
+	field()
+	table()
+	
+	query()
+	execute()
+	
+	
+
+数据模型类 Model 属性方法
+查询:
+1\声明数据模型类  Model提供的方法
+namespace app\admin\model;
+use think\Model;
+class 表名 extends Model{
+	protected $table="表名";
+	protected $pk = "主键名称";
+	protected $connect = array();
+	function 方法名(){
+
+	}
+}
+
+2\实例化对象
+new 命名空间\类名();
+
+3\调用方法
+
+M层:
+	增加
+	data() //产生数据
+	save() //执行保存
+	
+	删除
+	实例化数据模型类对象
+	where()
+	delete()
+	
+	找到谁,删除谁?
+	get(主键id值)->delete()
+	
+	
+	修改
+	save(data,where)
+	
+例子:添加分类
+	控制器Type.php
+		|
+		add()//显示添加表单
+		|
+		提交
+		|
+		save()//控制器Type
+		|
+	------------------
+	M                提示跳转
+
+
+例子:使用数据模型类,实现会员注册.
+
+数据模型类对象->allowField(true)
+作用:过滤掉表中不存在的字段.
+
+例子:实现分类修改
+
+
+数据合法性验证:
+1\指定验证规则,提示语,应用的场景,定义一个验证器
+放在application/模块/validate/Xxx.php
+类名和类文件名一致
+必须使用命名空间
+namespace app\模块\validate;
+use think\Validate;
+class Xxx extends Validate{
+	protected $rule=[
+		'被验证的字段名'=>"验证规则:辅助信息",
+		
+	];
+	protected $message=[
+		'被验证的字段名'=>'提示语',
+		
+	];
+
+}
+2\执行save时,先调用validate(true)->save()
+3\数据模型类获取报错信息
+getError()
+
+密码格式:6到20位,非空白字符.
+    protected $rule=[
+        'username'=>"unique:user",
+        'password'=>"regex:/^\S{6,20}$/",
+	''
+    ];
+    protected $message=array(
+        'username'=>"用户名已经被使用",
+        'password'=>"密码格式错误",
+    );
+验证两次密码一致:
+    protected $rule=[
+        'username'=>"unique:user",
+        'password'=>"regex:/^\S{6,20}$/",
+	'repassword'=>"confirm:password",
+    ];
+    protected $message=array(
+        'username'=>"用户名已经被使用",
+        'password'=>"密码格式错误",
+	'repassword'=>"两次密码不一致",
+    );
+
+密码需要md5加密:自动完成
+1\在数据模型类中声明一个属性
+protected $auto=['字段名',......];
+2\有一个方法指定字段处理的规则:
+function setPasswordAttr($v){
+	//处理后返回
+	
+}
+
+思考题:
+注册报错信息,提示跳转,
+使用起来不友好(填写的内容,都没有了),重新填写
+
+1\使用ajax
+
+2\不使用error(),使用 $this->assign(); $this->fetch()
+使用assign()的目的,把表单数据,报错信息,回传给模板.
+
+要操作表,必须由对应的数据模型类,否则使用Db类
+
+公共类
+
+dedecms
+
+mysql高级
+
+
+
+
+
+
+
+
+
+
+
+
+

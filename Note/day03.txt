@@ -1,0 +1,226 @@
+﻿V层:标签
+{$名称}
+{$名称.下标}
+{$名称[下标]}
+{foreach $arr as $k=>$v}
+
+{/foreach}
+{if condition="条件"}
+{/if}
+{if condition="条件"}
+{else/}
+{/if}
+{if condition="条件"}
+{elseif condition="条件"/}
+{elseif condition="条件"/}
+......
+{else/}
+{/if}
+{$Think.const.名称}
+{$Think.get.名称}
+{$Think.session.名称}
+{$Think.cookie.名称}
+{include file="控制器/方法"/}
+{$Request.param.名称}
+
+
+url("模块/控制器/方法",[其他传值])
+
+{:url()}
+C层接收传值:
+Request::instance()->param('名称');
+
+
+M层:
+1\修改配置文件database.php
+2\测试数据库链接是否成功
+\think\Db::query("sql语句",array());
+Db 了解
+	增加
+	\think\Db::table("表名");
+	db(表名)//函数
+	int insert(array('字段名'=>"值",.....))
+	返回值:影响记录的条数
+	获取insert产生的主键id值
+	int getLastInsId();
+
+	删除(链式写法)
+	$db=\think\Db::table("news")->where("id",1)
+				    ->delete();
+	
+	
+	修改
+	$re=\think\Db::table("news")->where("id",1)
+				    ->update($data);
+
+	查询
+	$db=\think\Db::table("news")
+	where()
+	order()
+	limit()
+	join(表名,"链接条件"[,方式 left right inner])
+	alias('名称') 给主表起别名
+	field("字段列表") 指定字段列表
+	find()
+	select()
+	count()
+
+	getLastSql()获取最后一次运行的sql语句
+	
+例子:
+	管理文章列表,前10条记录
+	application/admin/controller/News.php
+		|
+		oper()
+		|
+	-------------------
+	M                 V
+	删除文章,根据id
+	application/admin/controller/News.php
+		|
+		del()//根据id,删除文章记录
+		//$id=$this->request->param('id');
+		$db=\think\Db::table("news")->where("id",1)
+				    ->delete();
+SELECT `n`.*,t.tname as onename,t1.tname as typename 
+FROM `news` `n` INNER JOIN `type` `t` 
+		ON `n`.`oneid`=`t`.`id` 
+                INNER JOIN `type` `t1` 
+		ON `n`.`typeid`=`t1`.`id` 
+ORDER BY `n`.`id` desc 
+LIMIT 0,10
+
+例子:获取每个一级分类下各有多少篇文章.
+select count(*) as num,oneid from news group by oneid
+
+field()
+group()
+例子:获取每个一级分类下各有多少篇文章,把分类名称显示.
+select count(*) as num,tname from news n inner join type t
+on n.oneid=t.id
+
+ group by n.oneid
+	
+自定义数据模型类,实现数据库的操作:
+规则:
+1\指定命名控制
+namespace app\admin\model;
+use think\Model;
+2\命名
+application/admin/model/Xxx.php
+类名和类文件名一致
+3\方法名没有要求,一般使用小驼峰.
+
+说明:Db类的方法,Model都有.
+
+数据模型类产生对象:
+new 类名();
+
+
+例子:声明一个表type操作的数据模型类.
+
+Model的属性:
+	$table
+	$pk
+例子:获取一级分类
+foreach($typeArr as $v){
+	$v->tname;//字段tname对应的值
+}
+
+例子:呈现分类管理列表,使用数据模型类
+点击管理->application/admin/controller/Type.php
+		|
+		oper()
+		|
+	------------------
+	Type            oper.html
+
+例子:改造文章列表页,使用数据模型类
+	application/admin/controller/News.php
+		|
+		operm()
+		|
+	-------------------
+	M News.php        operm.html
+
+ThinkPHP
+	Db类的方法
+	增
+	删
+	改
+	查询
+	Modell的属性及方法
+	增
+	删
+	改
+	查询
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,50 @@
+﻿apache rewrite url重写
+
+apache是拿当前的地址和.htaccess文章的规则比对,如果成功,
+改变url地址.
+
+
+
+php的工作原理:
+	localhost/a.html
+	url地址请求--->apache
+--->看有没有.htaccess文件,有没有重写规则
+
+	a.html  a.php
+
+
+判断文件类型--->是php-->php引擎
+           ----------- 结果<------------------------------- |
+
+路由
+
+localhost/psd17061/09_project/news/detail.php?id=1
+
+8万篇文章---->一个url地址---->收录的少了.
+8万篇文章---->8万个url地址---->news/html/1.html 伪静态
+				|
+			      news/detail.php?id=1 
+
+news/list.php?page=1&oneid=2
+news/list_1_2.html
+
+如何使用:
+1\修改apche的配置文件,把rewrite扩展打开.
+#LoadModule rewrite_module modules/mod_rewrite.so
+2\AllowOverride All
+3\在使用重写功能的目录下新建一个.htaccess文件
+4\在htaccess文件中写规则
+RewriteEngine On
+RewriteRule 正则表达式  目标地址  L|R
+
+例子:rewrite a.html 跳转到 a.php上
+
+a\.html--->a.html
+
+
+
+
+
+
+
+

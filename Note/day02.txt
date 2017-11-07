@@ -1,0 +1,229 @@
+﻿TinkPHP 5.0
+url地址规则:
+http://***/public/index.php/模块名/控制器/方法
+http://***/public/index.php?s=模块名/控制器/方法
+C层编写:
+1\application/index/controller/Xxx.php
+2\类名和类文件名一致
+3\使用命名空间
+namespace app\index\controller;
+use think\Controller;
+4\继承Controller
+5\方法没有要求.
+
+Controller的方法:
+assign()
+fetch()
+display()
+success()
+error()
+redirect()
+_initialize()
+
+V层 标签 Think
+
+普通变量标签
+{$名称}
+数组变量标签
+{$名称.下标}
+{$名称[下标]}
+
+数组遍历标签
+{volist name="数组名" id="v" key="k"}
+{$v.下标}
+{/volist}
+
+{foreach $数组名 as $k=>$v}
+{$v.下标}
+{/foreach}
+
+条件标签
+{if condition="条件"}
+{/if}
+{if condition="条件"}
+{else/}
+{/if}
+
+{if condition="($name == 1) OR ($name > 100) "} 
+value12.
+{elseif condition="$name eq 2"/}
+value23.
+{else /} 
+value34.
+{/if}
+
+eq
+gt
+lt
+neq
+heq
+
+常量标签
+	{$Think.const.名称}
+声明常量:
+	在入口文件public/index.php
+预定义变量标签
+	{$Think.get.下标}
+	{$Think.cookie.下标}
+	{$Think.session.下标}
+加载公共模板
+{include file="public/header" /}
+view/public/header.html 
+
+变量调节器
+
+例子:实现文章列表页(前台),数据直接声明一个数组.
+application/index/controller/News.php 
+		|
+	     function lister() 
+		|
+
+	---------------
+		view/news/lister.html
+
+
+
+
+http://localhost/PSD17061/12_ThinkPHP/public/index.php/index/news/detail/id/1
+
+Request::instance()->param('id'); 
+
+V层:Think
+{$名称}
+{$名称.下标}
+{$名称[下标]+1}
+{foreach $arr as $v}
+{/foreach}
+
+{if condition="条件"}
+{/if}
+
+{if condition="条件"}
+{else/}
+{/if}
+
+{if condition="条件"}
+{elseif contditon="条件"/}
+.......
+{else/}
+{/if}
+
+{$Think.const.名称}
+{$Think.get.名称}
+{$Think.cookie.名称}
+{$Think.session.名称}
+
+{include file="public/header"/}
+public---控制器名
+header---方法名
+--->view/public/header.html
+
+变量调节器
+{被调节变量|函数名=参数1,参数2,###}
+
+###代表被调节的变量在参数中出现的位置.
+
+{$t|date='Y-m-d H:i:s',###}
+{$str|substr=###,0,3}
+
+url地址的生成
+{:url()}//当前的url地址
+{:url("模块/控制器/方法","id=$v[id]")}
+{$Request.方法名.参数名}
+--->
+<?php echo Request::instance()->方法名(参数名)?>
+
+Request类的接收传值(单例模式):
+$request=\think\Request::instance();
+方法:
+get()接收url地址传值,写法 ?名=值
+post()接收post表单数据
+param()接收url地址传值,写法 名/值
+module()
+controller()
+action()
+baseUrl()
+例子:在detail中接收传值id
+$request=\think\Request::instance();
+$id=$request->param('id');
+$id1=$request->get('id');
+例子:会员注册(不写表)
+application/index/controller/User.php
+	|
+	reg()
+	|
+----------------
+	view/user/reg.html
+		|
+		提交
+		|
+application/index/controller/User.php-->save()
+				//接收表单数据
+				\think\Request::instance()->post();		
+
+M层:
+1\修改配置文件database.php
+2\测试数据库链接是否成功
+\think\Db::query("sql语句",array());
+Db
+	增加
+	int insert(array('字段名'=>"值",.....))
+	返回值:影响记录的条数
+	获取insert产生的主键id值
+	int getLastInsId();
+
+	删除
+	修改
+	查询
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+

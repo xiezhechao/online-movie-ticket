@@ -1,0 +1,189 @@
+﻿后台访问控制:
+当访问controller/admin/
+	NewsController.class.php
+	TypeController.class.php
+	******
+时,必须登录状态.
+	LoginController.class.php不需要登录
+
+	
+	IndexController--->Controller
+	|
+	new IndexController
+	|
+	加载 IndexController.class.php
+	|
+	加载 Controller.class.php
+	对象--IndexController
+	构造方法__construct()
+	运行 IndexController::index()
+
+在父类Controller中调用子类的成员方法_init()
+if(method_exists($this,'_init')){
+         $this->_init();
+        }
+在子类中声明:
+function _init(){//等同构造方法
+	//访问控制
+	
+}
+
+MVC的优点:
+	把软件分为三层
+	实现了软件的低耦合性
+	软件可维护性强
+	结构清晰,命名规范,程序员代码规范
+	开发周期短
+MVC的缺点:
+	C层工作过于繁重  MV C L
+	理解困难
+	运行效率低
+
+框架:一个事物的主体.一个事物必须由的部分.
+
+程序中的框架:包含项目中常用的内容.
+
+模板引擎  Think
+C基类 Controller
+M基类 Db类
+公共类
+	分页
+	文件上传
+	验证码
+	......
+	
+ThinkPHP框架 5.0  yii yes,it is. ci  laraval
+
+ThinkPHP5.0 3.2 2.2  yii 2.0  1.1 
+
+学习方法:(共同学习)
+	1\安装
+	2\url地址规则
+	3\目录结构
+	4\C编写
+	5\V编写
+	6\M编写
+	7\公共类
+	8\路由 apache rewrite 伪静态
+1\下载安装
+thinkphp.cn
+目录:
+application 应用  控制器  数据模型类  模板
+	index  前台的控制器  模板  数据模型类
+	admin  后台控制器  模板  数据模型类
+	
+extend 扩展
+runtime 临时文件\缓存文件.
+thinkphp  框架的源代码
+vendor 第三方
+public/index.php 访问入口
+
+安装:
+在public/新建index.php
+define('APP_PATH', __DIR__ . '/../application/');
+// 加载框架引导文件
+require __DIR__ . '/../thinkphp/start.php';
+
+2\URL地址规则
+pathinfo模式
+***/index.php/模块/控制器/方法/名/值
+兼容模式:
+***/index.php?s=模块/控制器/方法/名/值
+
+3\C层编写规则
+a\命名 application/index/controller/Xxx.php 
+类名和类文件名一致
+b\使用命名空间
+namespace app\index\controller;
+use think\Controller;
+c\可以继承父类Controller
+d\可以是Controller 提供的方法
+e\方法名没有要求
+
+例子:呈现文章详细页
+application/index/controller/News.php
+namespace app\index\controller;
+use think\Controller;
+class News extends Controller{
+    /**
+     * 呈现文章详细页
+     */
+    function detail(){
+	//给模板传值
+	$this->assign('t',"今天学习ThinkPHP");
+        return $this->fetch([path]);//默认模板调用规则 view/news/detail.html
+    }
+}
+
+Controller类提供的方法:
+给模板传值
+assign(名,值)
+显示模板
+display(模板内容,传所有值)
+获取模板的运行结果
+fetch("模板路径")
+类的初始化,和构造方法作用一样
+_initialize()
+成功提示跳转
+success(提示语,跳转的地址,数据,等待时间)
+失败后提示跳转
+error(提示语,跳转的地址,数据,等待时间)
+跳转(没有提示)
+redirect(url,params)
+
+例子:
+	后台登录
+	application/admin/controller/Login.php
+					index()//呈现登录表单
+					check()//检查用户名密码是否正确
+				     Index.php
+	后台首页
+	访问控制
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+

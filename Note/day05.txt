@@ -1,0 +1,172 @@
+﻿数据模型类:
+1\必须封装,否则使用Db
+2\语法格式
+namespace app\模块common\model;
+use think\Model;
+class 表名 extends Model{
+	protected $table="";
+	protected $connect=array();
+	protected $pk="";
+	
+}
+3\实例化
+new \app\模块\model\Xxx();
+4\Model提供的方法:
+增
+	save(data)
+	data(数据)->save()
+删
+	get()->delete()
+改
+	save(数据,条件)
+查询
+	find()
+	select()
+	count()
+	get()
+	
+	where()
+	field()
+	table()
+	alias()
+	join()
+	group()
+	having()
+	order()
+	limit()
+
+数据的验证:验证器
+1\声明一个类,来指定验证的规则,提示语.
+namespace app\模块\validate;
+use think\Validate;
+class Xxx extends Validate{
+	protected $rule=[
+		'被验证的字段名称'=>"验证规则:辅助信息",
+	];
+	protected $message=[
+		'验证的字段名称.规则名称'=>'提示语',
+	];
+}
+2\数据模型类调用时:
+$数据模型类对象->validate(true)->save(data);
+3\如果save返回false
+通过数据模型类对象->getError();
+
+
+修改器:已经存在的数据进行处理
+自动完成:数据不存在,获取赋值
+
+会员注册使用ajax 作用:js中向服务器发送http请求
+$.ajax({
+	url:'',
+	data:'',
+	type:'',
+	dataType:'',
+	success:function(re){
+		
+	}
+})
+
+公共类
+分页
+$list=数据模型类对象->where()->paginate(每页显示记录数)
+	
+$list->render() 呈现分页结果
+例子:后台文章管理加上分页效果
+function oper(){
+        //获取数据
+        $news=new \app\admin\model\News();
+        $list=$news->alias("n")
+                ->join("type t","n.oneid = t.id")
+                ->join('type t1',"n.typeid = t1.id")
+                ->field("n.*,t.tname as onename,t1.tname as typename")
+                ->order("n.id",'desc')
+                ->paginate(8);
+        
+        $this->assign('list',$list);
+        return $this->fetch();
+    }
+
+View:
+	{$list->render()}
+v层展现的结果不满意:修改css样式
+	
+
+文件上传
+1\ $file = request()->file('image');//产生了文件上传类对象.
+2\调用方法move转移图片
+	$info=$file->move("保存目录");
+	if($info){//文件保存成功
+		$info->getSaveName();
+	}else{//失败
+		$error=$file->getError();
+		var_dump($error);
+	}
+例子:文章添加,并上传图片
+
+挂马攻击,通过上传图片,带有病毒程序.gd 拷贝 一次
+
+判断大小
+
+判断类型
+
+$file->validate(['size'=>大小,'ext'=>'jpg,gif,png','type'=>'image/jpeg,image/gif,image/png'])->move("保存目录");
+
+extension=php_fileinfo.dll
+
+finfo_open()
+
+图片处理
+生成缩略图
+
+1.$image = \think\Image::open('./image.png');
+2.// 按照原图的比例生成一个最大为150*150的缩略图并保存为thumb.png3.
+$image->thumb(150, 150)->save('./thumb.png');
+	验证码
+$imagePath="20170926/fdjsalfdjsalfj.jpg";
+	|
+$tImagePath="20170926/s_fdjsalfdjsalfj.jpg";
+
+加水印:
+打开
+$image = \think\Image::open('./image.png');
+加水印,并保存
+$image->water(水印图片路径[,位置])->save(path);
+
+验证码:
+设置:
+'captcha'  => [
+// 验证码字符集合       
+'codeSet'  => '2345678abcdefhijkmnpqrstuvwxyzABCDEFGHJKLMNPQRTUVWXY', 
+// 验证码字体大小(px)
+'fontSize' => 25, 
+// 是否画混淆曲线
+'useCurve' => true,
+// 验证码图片高度
+'imageH'   => 30,
+// 验证码图片宽度
+'imageW'   => 100,
+// 验证码位数
+'length'   => 5, 
+// 验证成功后是否重置  
+ 'reset'    => true
+],
+在表单上呈现一个图片,图片上右随机字符 view
+<img src="{:captcha_src()}" alt="captcha" />
+表单提交数据,验证验证码是否正确
+captcha_check("表单提交的验证码值")
+
+
+
+apache rewrite
+路由
+
+
+
+
+
+
+
+
+
+
